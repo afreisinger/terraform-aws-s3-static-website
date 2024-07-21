@@ -11,6 +11,30 @@ variable "tags" {
   default     = {}
 }
 
+variable "common_tags" {
+  description = "Common tags you want applied to all components."
+  type        = map(string)
+  default     = {}
+}
+
+variable "author" {
+  description = "Author"
+  type        = string
+  default = ""
+}
+
+variable "email" {
+  description = "email"
+  type        = string
+  default = ""
+}
+
+variable "environment" {
+  description = "environment"
+  type        = string
+  default     = "dev"
+}
+
 #------------------------------------------------------------------------------
 # Log Bucket
 #------------------------------------------------------------------------------

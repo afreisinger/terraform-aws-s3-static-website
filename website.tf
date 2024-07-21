@@ -28,8 +28,10 @@ resource "aws_s3_bucket" "website" {
   # object_lock_configuration - (Optional) A configuration of S3 object locking
 
   tags = merge({
-    Name = "${var.name_prefix}-website"
-  }, var.tags)
+    Name = "${var.name_prefix}-website",
+    Resource = "Simple Storage Service",
+    Purpose  = "Content"
+  }, local.common_tags)
 }
 
 resource "aws_s3_bucket_versioning" "website" {
@@ -277,8 +279,10 @@ resource "aws_cloudfront_distribution" "website" {
   }
 
   tags = merge({
-    Name = "${var.name_prefix}-website"
-  }, var.tags)
+    Name     = "${var.name_prefix}-website",
+    Resource = "Cloufront Service",
+    Purpose  = "Content Delivery Network"
+  }, local.common_tags)
 
   viewer_certificate {
     acm_certificate_arn            = var.create_acm_certificate ? aws_acm_certificate_validation.cert_validation[0].certificate_arn : var.acm_certificate_arn_to_use

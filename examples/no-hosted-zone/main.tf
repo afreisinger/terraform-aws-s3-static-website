@@ -1,6 +1,9 @@
 module "test_website" {
   source      = "../../"
   name_prefix = "test-website"
+  author      = "John Doe"
+  email       = "johndoe@gmail.com"
+  environment = "Testing"
 
   providers = {
     aws.main         = aws.main

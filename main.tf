@@ -4,6 +4,15 @@
 locals {
   website_bucket_name     = var.website_domain_name
   www_website_bucket_name = "www.${var.website_domain_name}"
+
+ common_tags = {
+    Author      = var.author
+    Domain      = var.website_domain_name
+    Email       = var.email
+    Environment = var.environment
+    Managed     = "Terraform"
+    Project     = "Static Website ${var.website_domain_name}"
+  }
 }
 
 #------------------------------------------------------------------------------
@@ -29,7 +38,7 @@ module "s3_logs_bucket" {
 
   tags = merge({
     Name = "${var.name_prefix}-logs"
-  }, var.tags)
+  }, var.common_tags)
 }
 
 #------------------------------------------------------------------------------
@@ -42,8 +51,10 @@ resource "aws_route53_zone" "hosted_zone" {
 
   name = var.website_domain_name
   tags = merge({
-    Name = "${var.name_prefix}-hosted-zone"
-  }, var.tags)
+    Name = "${var.name_prefix}-hosted-zone",
+    Resource = "Route 53",
+    Purpose  = "Hosted Zone"
+  }, var.common_tags)
 }
 
 #------------------------------------------------------------------------------
@@ -60,8 +71,10 @@ resource "aws_acm_certificate" "cert" {
   validation_method = "DNS"
 
   tags = merge({
-    Name = var.website_domain_name
-  }, var.tags)
+    Name = "${var.name_prefix}-acm-zone",
+    Resource = "AWS Certificate Manager",
+    Purpose  = "Certificate"
+  }, var.common_tags)
 
   lifecycle {
     create_before_destroy = true
