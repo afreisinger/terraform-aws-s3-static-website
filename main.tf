@@ -25,7 +25,7 @@ locals {
     Domain      = var.website_domain_name
     Email       = var.email
     Environment = var.environment
-    Managed     = "Terraform"
+    Managed     = "by Terraform"
     Project     = "Static Website ${var.website_domain_name}"
   }
 }
