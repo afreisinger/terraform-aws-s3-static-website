@@ -1,8 +1,23 @@
 #------------------------------------------------------------------------------
+# Misc
+#------------------------------------------------------------------------------
+
+resource "random_string" "short" {
+  length  = 6
+  special = false
+  upper   = false
+}
+
+resource "random_pet" "short" {
+  length    = 2
+  separator = "-"
+}
+
+#------------------------------------------------------------------------------
 # Locals
 #------------------------------------------------------------------------------
 locals {
-  website_bucket_name     = var.website_domain_name
+  website_bucket_name     = "${random_pet.short.id}-${random_string.short.result}"
   www_website_bucket_name = "www.${var.website_domain_name}"
 
   common_tags = {
@@ -37,8 +52,10 @@ module "s3_logs_bucket" {
   # s3_bucket_server_side_encryption_key           = var.s3_bucket_server_side_encryption_key
 
   tags = merge({
-    Name = "${var.name_prefix}-logs"
-  }, var.common_tags)
+    Name     = "${var.name_prefix}-logs",
+    Resource = "S3",
+    Purpose  = "Logs"
+  }, local.common_tags)
 }
 
 #------------------------------------------------------------------------------
@@ -54,7 +71,7 @@ resource "aws_route53_zone" "hosted_zone" {
     Name     = "${var.name_prefix}-hosted-zone",
     Resource = "Route 53",
     Purpose  = "Hosted Zone"
-  }, var.common_tags)
+  }, locals.common_tags)
 }
 
 #------------------------------------------------------------------------------
@@ -74,7 +91,7 @@ resource "aws_acm_certificate" "cert" {
     Name     = "${var.name_prefix}-acm-zone",
     Resource = "AWS Certificate Manager",
     Purpose  = "Certificate"
-  }, var.common_tags)
+  }, locals.common_tags)
 
   lifecycle {
     create_before_destroy = true
