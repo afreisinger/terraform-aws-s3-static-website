@@ -18,8 +18,8 @@ resource "random_pet" "short" {
 # Locals
 #------------------------------------------------------------------------------
 locals {
-  website_bucket_name     = "${var.name_prefix}-source-${random_pet.short.id}"
-  www_website_bucket_name = "www.${var.name_prefix}-source-${random_pet.short.id}"
+  website_bucket_name     = var.website_domain_name
+  www_website_bucket_name = "www.${var.website_domain_name}"
 
   common_tags = {
     Author      = var.author
