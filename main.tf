@@ -53,7 +53,7 @@ module "s3_logs_bucket" {
 
   tags = merge({
     Name     = "${var.name_prefix}-logs",
-    Resource = "S3",
+    Resource = "s3",
     Purpose  = "Logs"
   }, local.common_tags)
 }

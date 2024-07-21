@@ -29,7 +29,7 @@ resource "aws_s3_bucket" "website" {
 
   tags = merge({
     Name     = "${var.name_prefix}-website",
-    Resource = "S3",
+    Resource = "s3",
     Purpose  = "Content"
   }, local.common_tags)
 }
