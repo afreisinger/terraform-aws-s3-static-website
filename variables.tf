@@ -20,13 +20,13 @@ variable "common_tags" {
 variable "author" {
   description = "Author"
   type        = string
-  default = ""
+  default     = ""
 }
 
 variable "email" {
   description = "email"
   type        = string
-  default = ""
+  default     = ""
 }
 
 variable "environment" {

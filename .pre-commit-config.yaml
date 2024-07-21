@@ -5,4 +5,4 @@ repos:
       - id: terraform_docs
       - id: terraform_fmt
       # - id: terraform_validate
-      - id: terraform_trivy
+      - id: terraform_tfsec
