@@ -17,7 +17,7 @@ resource "random_pet" "short" {
 # Locals
 #------------------------------------------------------------------------------
 locals {
-  website_bucket_name     = "${random_pet.short.id}-${random_string.short.result}"
+  website_bucket_name     = "${var.name_prefix}-${random_pet.short.id}-${random_string.short.result}"
   www_website_bucket_name = "www.${var.website_domain_name}"
 
   common_tags = {
@@ -71,7 +71,7 @@ resource "aws_route53_zone" "hosted_zone" {
     Name     = "${var.name_prefix}-hosted-zone",
     Resource = "Route 53",
     Purpose  = "Hosted Zone"
-  }, locals.common_tags)
+  }, local.common_tags)
 }
 
 #------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ resource "aws_acm_certificate" "cert" {
     Name     = "${var.name_prefix}-acm-zone",
     Resource = "AWS Certificate Manager",
     Purpose  = "Certificate"
-  }, locals.common_tags)
+  }, local.common_tags)
 
   lifecycle {
     create_before_destroy = true
