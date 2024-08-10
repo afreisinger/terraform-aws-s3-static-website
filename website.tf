@@ -131,17 +131,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "website_bucket_we
   }
 }
 
-resource "aws_s3_object" "public_files" {
-  provider = aws.main
-
-  for_each = var.website_upload_to_bucket ? { for file in fileset("${path.module}/${var.website_public_directory}", "**/*") : file => file } : {}
-
-  bucket       = aws_s3_bucket.website.id
-  key          = each.value
-  source       = "${path.module}/${var.website_public_directory}/${each.value}"
-  content_type = "application/octet-stream"
-}
-
 #------------------------------------------------------------------------------
 # Cloudfront for S3 Bucket Website
 #------------------------------------------------------------------------------
