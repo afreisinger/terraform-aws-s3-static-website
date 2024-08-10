@@ -109,8 +109,8 @@ resource "aws_s3_bucket_public_access_block" "website_bucket_public_access_block
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "website_bucket_website_server_side_encryption_configuration" {
   provider = aws.main
-  count    = length(keys(var.website_server_side_encryption_configuration)) > 0 ? 1 : 0
 
+  count  = length(keys(var.website_server_side_encryption_configuration)) > 0 ? 1 : 0
   bucket = aws_s3_bucket.website.id
 
   dynamic "rule" {
@@ -129,6 +129,17 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "website_bucket_we
       }
     }
   }
+}
+
+resource "aws_s3_object" "public_files" {
+  provider = aws.main
+
+  for_each = var.website_upload_to_bucket ? { for file in fileset("${path.module}/${var.website_public_directory}", "**/*") : file => file } : {}
+
+  bucket       = aws_s3_bucket.website.id
+  key          = each.value
+  source       = "${path.module}/${var.website_public_directory}/${each.value}"
+  content_type = "application/octet-stream"
 }
 
 #------------------------------------------------------------------------------

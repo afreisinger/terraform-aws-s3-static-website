@@ -94,6 +94,18 @@ variable "website_error_document" {
   default     = "404.html"
 }
 
+variable "website_public_directory" {
+  description = "Folder containing HTML files to upload"
+  type        = string
+  default     = "public"
+}
+
+variable "website_upload_to_bucket" {
+  description = "(Optional) - Whether to upload the website content to the S3 bucket. Defaults to false."
+  type        = bool
+  default     = false
+}
+
 variable "website_cors_allowed_headers" {
   description = "(Optional) Specifies which headers are allowed. Defaults to Authorization and Content-Length"
   type        = list(string)
